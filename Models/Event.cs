@@ -23,5 +23,8 @@ namespace Parking.Models
 
         [Required]
         public float PaidValueInCents { get; set; }
+
+        [Required]
+        public string LicensePlate { get; set; } = string.Empty;
     }
 }
