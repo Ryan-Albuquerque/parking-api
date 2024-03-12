@@ -3,13 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Parking.Models
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>  
+    public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext<ApplicationUser>(options)  
     {
         public DbSet<Park> Parks {  get; set; }
         public DbSet<Event> Events { get; set; }
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
-        {
-
-        }
     }
 }

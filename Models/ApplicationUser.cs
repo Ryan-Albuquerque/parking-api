@@ -4,6 +4,6 @@ namespace Parking.Models
 {
     public class ApplicationUser : IdentityUser
     {
-        public Guid? ParkId { get; set; }
+        public Guid ParkId { get; set; }
     }
 }
