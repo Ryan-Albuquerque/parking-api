@@ -11,7 +11,7 @@ namespace Parking.Controllers
         private readonly IEventService _eventService = eventService;
 
         [HttpPost("event/start")]
-        public IActionResult StartEvent([FromBody] StartParking input)
+        public IActionResult StartEvent([FromBody] StartParkingDto input)
         {
             if (!ModelState.IsValid)
             {
@@ -37,7 +37,7 @@ namespace Parking.Controllers
         }
 
         [HttpPost("event/finish")]
-        public IActionResult FinishEvent([FromBody] FinishParking input)
+        public IActionResult FinishEvent([FromBody] FinishParkingDto input)
         {
             if (!ModelState.IsValid)
             {
