@@ -19,7 +19,7 @@ namespace Parking.Services
             return new ResponseHandler<List<Event>>(eventsFineshed, null);
         }
 
-        public ResponseHandler<Event> RegisterEvent(RegisterGetIn data)
+        public ResponseHandler<Event> RegisterEvent(StartParking data)
         {
             bool isAlreadyParking = _context.Events.Any(e => e.ParkId == data.ParkId
                                                              && e.GetInTime < DateTime.UtcNow

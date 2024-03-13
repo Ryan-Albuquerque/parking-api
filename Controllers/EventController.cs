@@ -10,8 +10,8 @@ namespace Parking.Controllers
     {
         private readonly IEventService _eventService = eventService;
 
-        [HttpPost("event")]
-        public IActionResult RegisterEvent([FromBody] RegisterGetIn input)
+        [HttpPost("event/start")]
+        public IActionResult StartEvent([FromBody] StartParking input)
         {
             if (!ModelState.IsValid)
             {

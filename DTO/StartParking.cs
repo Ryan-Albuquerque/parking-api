@@ -2,7 +2,7 @@
 
 namespace Parking.DTO
 {
-    public class RegisterGetIn
+    public class StartParking
     {
         [Required(ErrorMessage = "O campo GetInTime é obrigatório.")]
         public required DateTime GetInTime { get; set; }
