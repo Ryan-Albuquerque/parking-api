@@ -1,5 +1,6 @@
 ﻿using Parking.DTO;
 using Parking.Models;
+using Parking.Utils;
 
 namespace Parking.Services
 {
@@ -7,7 +8,7 @@ namespace Parking.Services
     {
         private readonly ApplicationDbContext _context = context;
 
-        public Event? RegisterEvent(RegisterGetIn data)
+        public ResponseHandler<Event> RegisterEvent(RegisterGetIn data)
         {
             bool isAlreadyParking = _context.Events.Any(e => e.ParkId == data.ParkId
                                                              && e.GetInTime < DateTime.UtcNow
@@ -27,10 +28,10 @@ namespace Parking.Services
                 _context.Events.Add(newEvent);
                 _context.SaveChanges(); 
 
-                return newEvent;
+                return new ResponseHandler<Event>(newEvent, null);
             }
 
-            return null;
+            return new ResponseHandler<Event>(null, "Estacionamento em uso");
         }
     }
 }

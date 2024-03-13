@@ -1,10 +1,11 @@
 ﻿using Parking.DTO;
 using Parking.Models;
+using Parking.Utils;
 
 namespace Parking.Services
 {
     public interface IEventService
     {
-        Event? RegisterEvent(RegisterGetIn data);
+        ResponseHandler<Event> RegisterEvent(RegisterGetIn data);
     }
 }
