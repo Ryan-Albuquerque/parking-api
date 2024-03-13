@@ -7,18 +7,32 @@ namespace Parking.Services
     public class EventService(ApplicationDbContext context) : IEventService
     {
         private readonly ApplicationDbContext _context = context;
-        public ResponseHandler<List<Event>> ListEventHistory(int page, int total, Guid parkId)
+
+        public ResponseHandler<List<EventHistoryResponseDto>> ListEventHistory(int page, int total, Guid parkId)
         {
             var eventsFineshed = _context.Events
-                .Where(e => e.ParkId == parkId && e.GetOutTime != null)
-                .Skip((page - 1) * total)
-                .Take(total)
-                .ToList();
+               .Where(e => e.ParkId == parkId && e.GetOutTime != null)
+               .Select(e => new EventHistoryResponseDto
+               {
+                   Id = e.Id,
+                   GetInTime = e.GetInTime,
+                   GetOutTime = e.GetOutTime,
+                   GetInUserId = e.GetInUserId,
+                   GetOutUserId = e.GetOutUserId,
+                   PaidValueInCents = e.PaidValueInCents,
+                   LicensePlate = e.LicensePlate,
+                   ParkId = e.ParkId,
+                   GetInUserName = _context.Users.FirstOrDefault(p => p.Id == e.GetInUserId).UserName ?? null,
+                   GetOutUserName = _context.Users.FirstOrDefault(p => p.Id == e.GetOutUserId).UserName ?? null,
+               })
+               .Skip((page - 1) * total)
+               .Take(total)
+               .ToList();
 
-            return new ResponseHandler<List<Event>>(eventsFineshed, null);
+            return new ResponseHandler<List<EventHistoryResponseDto>>(eventsFineshed, null);
         }
 
-        public ResponseHandler<Event> StartParkingEvent(StartParking data)
+        public ResponseHandler<Event> StartParkingEvent(StartParkingDto data)
         {
             bool isAlreadyParking = _context.Events.Any(e => e.ParkId == data.ParkId
                                                              && e.GetInTime < DateTime.UtcNow
@@ -44,7 +58,7 @@ namespace Parking.Services
             return new ResponseHandler<Event>(null, "Estacionamento em uso");
         }
 
-        public ResponseHandler<Event> FinishParkingEvent(FinishParking data)
+        public ResponseHandler<Event> FinishParkingEvent(FinishParkingDto data)
         {
             var eventToFinish = _context.Events.FirstOrDefault(e => e.ParkId == data.ParkId && e.GetOutTime == null);
 
@@ -70,7 +84,7 @@ namespace Parking.Services
             return new ResponseHandler<Event>(null, "Não há estacionamento para fechar");
         }
 
-        private decimal CalculateParkingFee(DateTime entryTime, DateTime exitTime, decimal hourlyRate)
+        private static decimal CalculateParkingFee(DateTime entryTime, DateTime exitTime, decimal hourlyRate)
         {
             TimeSpan parkingDuration = exitTime - entryTime;
             double totalHours = Math.Ceiling(parkingDuration.TotalHours);

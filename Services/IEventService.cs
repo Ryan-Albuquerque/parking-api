@@ -6,8 +6,8 @@ namespace Parking.Services
 {
     public interface IEventService
     {
-        ResponseHandler<Event> StartParkingEvent(StartParking data);
-        ResponseHandler<Event> FinishParkingEvent(FinishParking data);
-        ResponseHandler<List<Event>> ListEventHistory(int page, int total, Guid parkId);
+        ResponseHandler<Event> StartParkingEvent(StartParkingDto data);
+        ResponseHandler<Event> FinishParkingEvent(FinishParkingDto data);
+        ResponseHandler<List<EventHistoryResponseDto>> ListEventHistory(int page, int total, Guid parkId);
     }
 }

@@ -16,9 +16,9 @@ namespace Parking.Models
         public DateTime? GetOutTime { get; set; }
 
         [Required]
-        public Guid GetInUserId { get; set; }
+        public required string GetInUserId { get; set; }
 
-        public Guid? GetOutUserId { get; set; }
+        public string? GetOutUserId { get; set; }
 
         [Required]
         public decimal PaidValueInCents { get; set; }
