@@ -1,16 +1,18 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Parking.DTO;
 using Parking.Services;
 
 namespace Parking.Controllers
 {
-    [Route("api")]
+    [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = "Bearer")]
     public class EventController(IEventService eventService) : ControllerBase
     {
         private readonly IEventService _eventService = eventService;
 
-        [HttpPost("event/start")]
+        [HttpPost("start")]
         public IActionResult StartEvent([FromBody] StartParkingDto input)
         {
             if (!ModelState.IsValid)
@@ -36,7 +38,7 @@ namespace Parking.Controllers
             }
         }
 
-        [HttpPost("event/finish")]
+        [HttpPost("finish")]
         public IActionResult FinishEvent([FromBody] FinishParkingDto input)
         {
             if (!ModelState.IsValid)
@@ -62,7 +64,7 @@ namespace Parking.Controllers
             }
         }
 
-        [HttpGet("event/history")]
+        [HttpGet("history")]
         public IActionResult ListEventHistoryByPark([FromQuery] Guid parkId, [FromQuery] int page = 1, [FromQuery] int total = 10) 
         {
             if (!ModelState.IsValid)
