@@ -1,18 +1,24 @@
-﻿using Parking.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using Parking.Models;
 
 namespace Parking.Data
 {
     public static class Seeders
     {
-        private static readonly Guid parkId = new();
-
-        private static readonly Guid userA = new();
-        private static readonly Guid userB = new();
-
-        private static readonly DateTime currentDate = DateTime.UtcNow;
-        public static void Initialize(ApplicationDbContext context)
+        public static async Task Initialize(ApplicationDbContext context)
         {
-            VerifyTables(context);
+            var parkId = Guid.NewGuid();
+
+            var userA = Guid.NewGuid().ToString();
+            var userB = Guid.NewGuid().ToString();
+
+            DateTime currentDate = DateTime.UtcNow;
+
+            var hasData = await HasDataInTables(context);
+            if(hasData)
+            {
+                return;
+            }
 
             List<Event> events =
             [
@@ -45,52 +51,58 @@ namespace Parking.Data
                 new ()
                 {
                     Id = parkId,
-                    Name = "Seu João",
+                    Name = "Seu João Park",
                     PricePerHourInCents = 600
                 },
                 new ()
                 {
                     Id = new Guid(),
-                    Name = "Seu João",
+                    Name = "Seu Pedro Park",
                     PricePerHourInCents = 600
                 }
             ];
 
-            List<User> users = 
+            List<User> users =
             [
-                new() 
+                new()
                 {
-                    Id = userA.ToString(),
-                    ParkId = parkId
+                    Id = userA,
+                    ParkId = parkId,
+                    UserName = "Chico"
+
                 },
                 new()
                 {
-                    Id = userB.ToString(),
-                    ParkId = parkId
+                    Id = userB,
+                    ParkId = parkId,
+                    UserName = "Tony"
                 }
             ];
 
-            context.Events.AddRange(events);
-            context.Parks.AddRange(parks);
-            context.Users.AddRange(users);
+            await context.Events.AddRangeAsync(events);
+            await context.Parks.AddRangeAsync(parks);
+            await context.Users.AddRangeAsync(users);
 
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
 
-        private static void VerifyTables(ApplicationDbContext context)
+        private static async Task<bool> HasDataInTables(ApplicationDbContext context)
         {
-            if (context.Events.Any())
+            System.Console.WriteLine(context.Parks.ToArray());
+            if (await context.Events.AnyAsync())
             {
-                return;
+                return true;
             }
-            if (context.Parks.Any())
+            if (await context.Parks.AnyAsync())
             {
-                return;
+                return true;
             }
-            if (context.Users.Any())
+            if (await context.Users.AnyAsync())
             {
-                return;
+                return true;
             }
+
+            return false;
         }
     }
 }
