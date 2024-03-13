@@ -36,6 +36,32 @@ namespace Parking.Controllers
             }
         }
 
+        [HttpPost("event/finish")]
+        public IActionResult FinishEvent([FromBody] FinishParking input)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                var reponse = _eventService.FinishParkingEvent(input);
+
+                if (reponse.Error is not null)
+                {
+                    return BadRequest(reponse.Error);
+                }
+
+                return Ok(reponse.Result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Ocorreu um erro interno: {ex.Message}");
+                throw;
+            }
+        }
+
         [HttpGet("event/history")]
         public IActionResult ListEventHistoryByPark([FromQuery] Guid parkId, [FromQuery] int page = 1, [FromQuery] int total = 10) 
         {
