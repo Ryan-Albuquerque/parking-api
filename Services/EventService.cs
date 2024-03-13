@@ -8,6 +8,17 @@ namespace Parking.Services
     {
         private readonly ApplicationDbContext _context = context;
 
+        public ResponseHandler<List<Event>> ListEventHistory(int page, int total, Guid parkId)
+        {
+            var eventsFineshed = _context.Events
+                .Where(e => e.ParkId == parkId && e.GetOutTime != null)
+                .Skip((page - 1) * total)
+                .Take(total)
+                .ToList();
+
+            return new ResponseHandler<List<Event>>(eventsFineshed, null);
+        }
+
         public ResponseHandler<Event> RegisterEvent(RegisterGetIn data)
         {
             bool isAlreadyParking = _context.Events.Any(e => e.ParkId == data.ParkId
