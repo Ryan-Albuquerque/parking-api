@@ -6,6 +6,7 @@ using Microsoft.OpenApi.Models;
 using Parking.Data;
 using Parking.Models;
 using Parking.Services;
+using Parking.Services.Interfaces;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);

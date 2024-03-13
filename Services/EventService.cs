@@ -1,5 +1,6 @@
-﻿using Parking.DTO;
+﻿using Parking.Data.DTO;
 using Parking.Models;
+using Parking.Services.Interfaces;
 using Parking.Utils;
 
 namespace Parking.Services

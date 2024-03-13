@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Parking.DTO
+namespace Parking.Data.DTO
 {
     public class FinishParkingDto
     {

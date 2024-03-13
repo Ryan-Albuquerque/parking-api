@@ -1,6 +1,6 @@
 ﻿using Parking.Models;
 
-namespace Parking.DTO
+namespace Parking.Data.DTO
 {
     public class EventHistoryResponseDto : Event
     {

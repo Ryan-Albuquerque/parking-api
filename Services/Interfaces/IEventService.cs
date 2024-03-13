@@ -1,8 +1,8 @@
-﻿using Parking.DTO;
+﻿using Parking.Data.DTO;
 using Parking.Models;
 using Parking.Utils;
 
-namespace Parking.Services
+namespace Parking.Services.Interfaces
 {
     public interface IEventService
     {
