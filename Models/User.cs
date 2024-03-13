@@ -2,7 +2,7 @@
 
 namespace Parking.Models
 {
-    public class ApplicationUser : IdentityUser
+    public class User : IdentityUser
     {
         public Guid ParkId { get; set; }
     }

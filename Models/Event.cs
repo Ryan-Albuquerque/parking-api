@@ -21,7 +21,7 @@ namespace Parking.Models
         public Guid? GetOutUserId { get; set; }
 
         [Required]
-        public float PaidValueInCents { get; set; }
+        public decimal PaidValueInCents { get; set; }
 
         [Required]
         public string LicensePlate { get; set; } = string.Empty;

@@ -11,6 +11,6 @@ namespace Parking.Models
         public string Name { get; set; } = string.Empty;
 
         [Required]
-        public float PricePerHourInCents { get; set; }
+        public decimal PricePerHourInCents { get; set; }
     }
 }
