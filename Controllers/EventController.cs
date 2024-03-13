@@ -20,7 +20,7 @@ namespace Parking.Controllers
 
             try
             {
-                var reponse = _eventService.RegisterEvent(input);
+                var reponse = _eventService.StartParkingEvent(input);
 
                 if (reponse.Error is not null)
                 {
