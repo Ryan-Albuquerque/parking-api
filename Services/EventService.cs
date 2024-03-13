@@ -22,8 +22,8 @@ namespace Parking.Services
                    PaidValueInCents = e.PaidValueInCents,
                    LicensePlate = e.LicensePlate,
                    ParkId = e.ParkId,
-                   GetInUserName = _context.Users.FirstOrDefault(p => p.Id == e.GetInUserId).UserName ?? null,
-                   GetOutUserName = _context.Users.FirstOrDefault(p => p.Id == e.GetOutUserId).UserName ?? null,
+                   GetInUserName = _context.Users.FirstOrDefault(p => p.Id == e.GetInUserId).NormalizedUserName ?? null,
+                   GetOutUserName = _context.Users.FirstOrDefault(p => p.Id == e.GetOutUserId).NormalizedUserName ?? null,
                })
                .Skip((page - 1) * total)
                .Take(total)

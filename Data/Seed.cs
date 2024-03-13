@@ -68,14 +68,16 @@ namespace Parking.Data
                 {
                     Id = userA,
                     ParkId = parkId,
-                    UserName = "Chico"
+                    NormalizedUserName = "Chico",
+                    UserName = "chico"
 
                 },
                 new()
                 {
                     Id = userB,
                     ParkId = parkId,
-                    UserName = "Tony"
+                    NormalizedUserName = "Tony",
+                    UserName = "tony"
                 }
             ];
 
