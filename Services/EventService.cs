@@ -7,8 +7,6 @@ namespace Parking.Services
     public class EventService(ApplicationDbContext context) : IEventService
     {
         private readonly ApplicationDbContext _context = context;
-        private readonly int _CENTS = 100;
-
         public ResponseHandler<List<Event>> ListEventHistory(int page, int total, Guid parkId)
         {
             var eventsFineshed = _context.Events
@@ -72,16 +70,14 @@ namespace Parking.Services
             return new ResponseHandler<Event>(null, "Não há estacionamento para fechar");
         }
 
-        private float CalculateParkingFee(DateTime entryTime, DateTime exitTime, float hourlyRate)
+        private decimal CalculateParkingFee(DateTime entryTime, DateTime exitTime, decimal hourlyRate)
         {
             TimeSpan parkingDuration = exitTime - entryTime;
             double totalHours = Math.Ceiling(parkingDuration.TotalHours);
 
-            float totalFeeInCents = Convert.ToSingle(totalHours) * hourlyRate;
+            decimal totalFeeInCents = Convert.ToDecimal(totalHours) * hourlyRate;
 
-            float totalFeeInReal = totalFeeInCents / _CENTS;
-
-            return totalFeeInReal;
+            return totalFeeInCents;
         }
     }
 }
