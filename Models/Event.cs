@@ -11,15 +11,14 @@ namespace Parking.Models
         public Guid ParkId { get; set; }
 
         [Required]
-        public string GetInTime { get; set; } = string.Empty;
+        public DateTime GetInTime { get; set; }
 
-        [Required]
-        public string GetOutTime { get; set; } = string.Empty;
-        
+        public DateTime? GetOutTime { get; set; }
+
         [Required]
         public Guid GetInUserId { get; set; }
 
-        public Guid GetOutUserId{ get; set; }
+        public Guid? GetOutUserId { get; set; }
 
         [Required]
         public float PaidValueInCents { get; set; }

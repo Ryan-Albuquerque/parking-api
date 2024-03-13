@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Parking.Models;
@@ -11,9 +12,11 @@ using Parking.Models;
 namespace Parking.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240312232637_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -233,10 +236,10 @@ namespace Parking.Migrations
                     b.Property<Guid>("GetInUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("GetOutTime")
+                    b.Property<DateTime>("GetOutTime")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid?>("GetOutUserId")
+                    b.Property<Guid>("GetOutUserId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("LicensePlate")

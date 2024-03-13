@@ -12,8 +12,8 @@ using Parking.Models;
 namespace Parking.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240312224944_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20240313000827_UpdateEventEntity")]
+    partial class UpdateEventEntity
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -230,16 +230,14 @@ namespace Parking.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("GetInTime")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<DateTime>("GetInTime")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("GetInUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("GetOutTime")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<DateTime?>("GetOutTime")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("GetOutUserId")
                         .HasColumnType("uuid");

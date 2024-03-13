@@ -58,8 +58,8 @@ namespace Parking.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     ParkId = table.Column<Guid>(type: "uuid", nullable: false),
-                    GetInTime = table.Column<string>(type: "text", nullable: false),
-                    GetOutTime = table.Column<string>(type: "text", nullable: false),
+                    GetInTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    GetOutTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     GetInUserId = table.Column<Guid>(type: "uuid", nullable: false),
                     GetOutUserId = table.Column<Guid>(type: "uuid", nullable: false),
                     PaidValueInCents = table.Column<float>(type: "real", nullable: false),
