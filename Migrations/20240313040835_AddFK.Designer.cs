@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Parking.Models;
@@ -11,9 +12,11 @@ using Parking.Models;
 namespace Parking.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240313040835_AddFK")]
+    partial class AddFK
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -185,6 +188,12 @@ namespace Parking.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("GetInUserId");
+
+                    b.HasIndex("GetOutUserId");
+
+                    b.HasIndex("ParkId");
+
                     b.ToTable("Events");
                 });
 
@@ -270,6 +279,8 @@ namespace Parking.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex");
 
+                    b.HasIndex("ParkId");
+
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
@@ -322,6 +333,42 @@ namespace Parking.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Parking.Models.Event", b =>
+                {
+                    b.HasOne("Parking.Models.User", "GetInUser")
+                        .WithMany()
+                        .HasForeignKey("GetInUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Parking.Models.User", "GetOutUser")
+                        .WithMany()
+                        .HasForeignKey("GetOutUserId");
+
+                    b.HasOne("Parking.Models.Park", "Park")
+                        .WithMany()
+                        .HasForeignKey("ParkId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("GetInUser");
+
+                    b.Navigation("GetOutUser");
+
+                    b.Navigation("Park");
+                });
+
+            modelBuilder.Entity("Parking.Models.User", b =>
+                {
+                    b.HasOne("Parking.Models.Park", "Park")
+                        .WithMany()
+                        .HasForeignKey("ParkId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Park");
                 });
 #pragma warning restore 612, 618
         }
