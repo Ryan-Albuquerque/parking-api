@@ -11,15 +11,31 @@ namespace Parking.Controllers
         private readonly IEventService _eventService = eventService;
 
         [HttpPost("event")]
-        public IActionResult RegisterEvent([FromBody] RegisterGetIn model)
+        public IActionResult RegisterEvent([FromBody] RegisterGetIn input)
         {
-           var result = _eventService.RegisterEvent(model);
-
-            if(result != null)
+            if (!ModelState.IsValid)
             {
-                return Ok(result);
+                return BadRequest(ModelState);
             }
-            return BadRequest("Estacionamento em uso");
+
+            try
+            {
+                var reponse = _eventService.RegisterEvent(input);
+
+                if (reponse.Error is not null)
+                {
+                    return BadRequest(reponse.Error);
+                }
+
+                return Ok(reponse.Result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Ocorreu um erro interno: {ex.Message}");
+                throw;
+            }
+
+           
         }
     }
 }
