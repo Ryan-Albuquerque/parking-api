@@ -39,8 +39,7 @@ namespace Parking.Services
             var user = new User
             {
                 UserName = data.Username,
-                Email = data.Email,
-                NormalizedUserName = data.Name
+                Email = data.Email
             };
 
             var result = await _userManager.CreateAsync(user, data.Password);

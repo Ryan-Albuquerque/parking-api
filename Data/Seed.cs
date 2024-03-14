@@ -68,7 +68,6 @@ namespace Parking.Data
                 {
                     Id = userA,
                     ParkId = parkId,
-                    NormalizedUserName = "Chico",
                     UserName = "chico"
 
                 },
@@ -76,7 +75,6 @@ namespace Parking.Data
                 {
                     Id = userB,
                     ParkId = parkId,
-                    NormalizedUserName = "Tony",
                     UserName = "tony"
                 }
             ];
