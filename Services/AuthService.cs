@@ -114,7 +114,8 @@ namespace Parking.Services
                 ValidIssuer = _configuration["Jwt:Issuer"],
                 ValidateAudience = false,
                 ValidAudience = _configuration["Jwt:Audience"],
-                ValidateLifetime = true
+                ValidateLifetime = true,
+                ClockSkew = TimeSpan.Zero
             };
 
             try
@@ -125,7 +126,7 @@ namespace Parking.Services
                 var parkIdClaim = principal.FindFirst("parkid");
                 var userNameClaim = principal.FindFirst("username");
 
-                if (userIdClaim != null && parkIdClaim != null)
+                if (userIdClaim != null && parkIdClaim != null && userNameClaim != null)
                 {
                     return new UserInfoDto
                     {
@@ -135,6 +136,10 @@ namespace Parking.Services
                     };
                 }
 
+                return null;
+            }
+            catch (SecurityTokenExpiredException)
+            {
                 return null;
             }
             catch (Exception ex)
