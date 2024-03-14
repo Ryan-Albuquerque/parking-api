@@ -10,11 +10,12 @@ using System.Text;
 
 namespace Parking.Services
 {
-    public class AuthService(SignInManager<User> signInManager, IConfiguration configuration, UserManager<User> userManager) : IAuthService
+    public class AuthService(SignInManager<User> signInManager, IConfiguration configuration, UserManager<User> userManager, ApplicationDbContext context) : IAuthService
     {
         private readonly SignInManager<User> _signInManager = signInManager;
         private readonly IConfiguration _configuration = configuration;
         private readonly UserManager<User> _userManager = userManager;
+        private readonly ApplicationDbContext _context = context;
 
         public async Task<ResponseHandler<string>> Login(LoginRequestDto data)
         {
@@ -36,10 +37,18 @@ namespace Parking.Services
 
         public async Task<ResponseHandler<string>> RegisterUser(RegisterRequestDto data)
         {
+            var validPark = _context.Parks.FirstOrDefault(e => e.Name == data.ParkName);
+
+            if (validPark is null)
+            {
+                return new ResponseHandler<string>(null, "Estacionamento é inválido");
+            }
+
             var user = new User
             {
                 UserName = data.Username,
-                Email = data.Email
+                Email = data.Email,
+                ParkId = validPark.Id,
             };
 
             var result = await _userManager.CreateAsync(user, data.Password);
