@@ -55,7 +55,29 @@ namespace Parking.Controllers
                 return StatusCode(500, $"Ocorreu um erro interno: {ex.Message}");
                 throw;
             }
- 
+
+        }
+
+        [HttpPost("userinfo")]
+        public IActionResult GetUserInfo([FromBody] GetUserInfoRequestDto input)
+        {
+            try
+            {
+                var response = _authService.GetUserInfo(input.Token);
+
+                if (response.Error is not null)
+                {
+                    return Unauthorized(response.Error);
+                }
+
+                return Ok(response.Result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Ocorreu um erro interno: {ex.Message}");
+                throw;
+            }
+
         }
     }
 }

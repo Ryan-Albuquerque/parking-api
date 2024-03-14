@@ -58,7 +58,24 @@ namespace Parking.Services
                 return new ResponseHandler<string>("Usuário cadastrado", null);
             }
 
+            if (result.Errors.Any(e => e.Code == "DuplicateUserName"))
+            {
+                return new ResponseHandler<string>(null, "Usuário já cadastrado");
+            }
+
             return new ResponseHandler<string>(null, "Erro ao cadastrar usuário");
+        }
+
+        public ResponseHandler<UserInfoDto> GetUserInfo(string token)
+        {
+            var claims = DecodeJwtToken(token);
+
+            if (claims != null)
+            {
+                return new ResponseHandler<UserInfoDto>(claims, null);
+            }
+
+            return new ResponseHandler<UserInfoDto>(null, "Não foi possível coletar as informações do usuário");
         }
 
         private string GenerateJwtToken(User user)
@@ -68,9 +85,12 @@ namespace Parking.Services
 
             var claims = new[]
             {
-            new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-        };
+                new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim("parkId", user.ParkId.ToString()),
+                new Claim("userId", user.Id),
+                new Claim("userName", user.UserName)
+            };
 
             var token = new JwtSecurityToken(
                 _configuration["Jwt:Issuer"],
@@ -81,6 +101,46 @@ namespace Parking.Services
             );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+        private UserInfoDto? DecodeJwtToken(string token)
+        {
+            var handler = new JwtSecurityTokenHandler();
+
+            var validationParameters = new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:SecretKey"])),
+                ValidateIssuer = false,
+                ValidIssuer = _configuration["Jwt:Issuer"],
+                ValidateAudience = false,
+                ValidAudience = _configuration["Jwt:Audience"],
+                ValidateLifetime = true
+            };
+
+            try
+            {
+                var principal = handler.ValidateToken(token, validationParameters, out _);
+
+                var userIdClaim = principal.FindFirst("userid");
+                var parkIdClaim = principal.FindFirst("parkid");
+                var userNameClaim = principal.FindFirst("username");
+
+                if (userIdClaim != null && parkIdClaim != null)
+                {
+                    return new UserInfoDto
+                    {
+                        UserId = userIdClaim.Value,
+                        ParkId = parkIdClaim.Value,
+                        Username = userNameClaim.Value,
+                    };
+                }
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Falha ao decodificar o token JWT", ex);
+            }
         }
 
     }

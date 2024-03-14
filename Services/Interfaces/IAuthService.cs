@@ -1,5 +1,4 @@
 ﻿using Parking.Data.DTO;
-using Parking.Models;
 using Parking.Utils;
 
 namespace Parking.Services.Interfaces
@@ -8,5 +7,6 @@ namespace Parking.Services.Interfaces
     {
         Task<ResponseHandler<string>> RegisterUser(RegisterRequestDto data);
         Task<ResponseHandler<string>> Login(LoginRequestDto data);
+        ResponseHandler<UserInfoDto> GetUserInfo(string token);
     }
 }
