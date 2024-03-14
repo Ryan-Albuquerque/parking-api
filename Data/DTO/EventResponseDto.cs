@@ -2,7 +2,7 @@
 
 namespace Parking.Data.DTO
 {
-    public class EventHistoryResponseDto : Event
+    public class EventResponseDto : Event
     {
         public string? GetInUserName { get; set; }
         public string? GetOutUserName { get; set; }

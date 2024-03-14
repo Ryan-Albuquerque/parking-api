@@ -10,7 +10,7 @@ namespace Parking.Data.DTO
         [Required(ErrorMessage = "O campo GetOutUserId é obrigatório.")]
         public required string GetOutUserId { get; set; }
 
-        [Required(ErrorMessage = "O campo ParkId é obrigatório.")]
-        public required Guid ParkId { get; set; }
+        [Required(ErrorMessage = "O campo LicensePlate é obrigatório.")]
+        public required string LicensePlate { get; set; }
     }
 }

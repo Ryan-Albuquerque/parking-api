@@ -83,10 +83,11 @@ namespace Parking.Controllers
 
                 var buildResult = new
                 {
-                    result = reponse.Result,
+                    result = reponse?.Result?.Events,
                     meta = new
                     {
                         page,
+                        totalSize = reponse?.Result?.TotalSize,
                         total
                     }
                 };

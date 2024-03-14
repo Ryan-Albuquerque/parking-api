@@ -8,6 +8,6 @@ namespace Parking.Services.Interfaces
     {
         ResponseHandler<Event> StartParkingEvent(StartParkingDto data);
         ResponseHandler<Event> FinishParkingEvent(FinishParkingDto data);
-        ResponseHandler<List<EventHistoryResponseDto>> ListEventHistory(int page, int total, Guid parkId);
+        ResponseHandler<EventHistoryDto> ListEventHistory(int page, int total, Guid parkId);
     }
 }
