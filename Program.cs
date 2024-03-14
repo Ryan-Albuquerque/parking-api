@@ -84,6 +84,8 @@ void ConfigureServices(IServiceCollection services)
         };
     });
 
+    services.AddCors(cors => cors.AddDefaultPolicy(policy => policy.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin().WithExposedHeaders("Content-Disposition")));
+
     services.AddIdentity<User, IdentityRole>()
         .AddEntityFrameworkStores<ApplicationDbContext>()
         .AddDefaultTokenProviders();
@@ -120,6 +122,7 @@ void ConfigureHttpPipeline(WebApplication app)
 
     app.UseHttpsRedirection();
     app.UseRouting();
+    app.UseCors();
     app.UseAuthentication();
     app.UseAuthorization();
 
